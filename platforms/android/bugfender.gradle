@@ -1,0 +1,3 @@
+dependencies {
+		compile 'com.bugfender.sdk:android:0.+'
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:rim="http://www.blackberry.com/ns/widgets"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="cordova-plugin-bugfender"
+    version="1.0.1-dev">
+    <name>Bugfender</name>
+    <description>Bugfender integration for Cordova apps</description>
+    <license>See https://bugfender.com</license>
+    <keywords>bugfender,cordova</keywords>
+
+    <engines>
+            <engine name="cordova" version=">=5.0.0" />
+    </engines>
+
+<!--
+    <js-module src="www/bugfender.js" name="bugfender">
+        <clobbers target="window.Bugfender" />
+    </js-module>
+-->
+
+    <platform name="android">
+        <preference name="BUGFENDER_APP_KEY" default="YOUR APP KEY HERE"/>
+        <source-file src="platforms/android/res/values/bugfender.xml" target-dir="res/values" />
+        <config-file target="res/values/bugfender.xml" parent="/*">
+            <string name="BUGFENDER_APP_KEY">$BUGFENDER_APP_KEY</string>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
+
+        <source-file src="platforms/android/com/bugfender/sdk/cordova/BugfenderPlugin.java" target-dir="src/com/bugfender/sdk/cordova" /> 
+
+        <framework src="platforms/android/bugfender.gradle" custom="true" type="gradleReference"/>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Bugfender">
+                <param name="android-package" value="com.bugfender.sdk.cordova.BugfenderPlugin" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+    </platform>
+
+<!--
+    <platform name="ios">
+        <preference name="BUGFENDER_APP_KEY" default="YOUR APP KEY HERE"/>
+
+        <config-file target="config.xml" parent="/*">
+            <feature name="Bugfender">
+                <param name="ios-package" value="BFCDVSDKBugfender" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <header-file src="platform/ios/BFCDVSDKBugfender.h" />
+        <source-file src="platform/ios/BFCDVSDKBugfender.m" />
+
+        <config-file target="*-Info.plist" parent="FacebookAppID">
+            <string>$APP_ID</string>
+        </config-file>
+
+		<framework src="platforms/ios/FacebookSDK.framework" custom="true" />
+
+    </platform>
+-->
+
+</plugin>
