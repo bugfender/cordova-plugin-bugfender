@@ -43,7 +43,6 @@
         </config-file>
     </platform>
 
-<!--
     <platform name="ios">
         <preference name="BUGFENDER_APP_KEY" default="YOUR APP KEY HERE"/>
 
@@ -54,16 +53,16 @@
             </feature>
         </config-file>
 
-        <header-file src="platform/ios/BFCDVSDKBugfender.h" />
-        <source-file src="platform/ios/BFCDVSDKBugfender.m" />
+        <header-file src="platforms/ios/BFCDVSDKBugfender.h" />
+        <source-file src="platforms/ios/BFCDVSDKBugfender.m" />
 
-        <config-file target="*-Info.plist" parent="FacebookAppID">
-            <string>$APP_ID</string>
+        <config-file target="*-Info.plist" parent="BUGFENDER_APP_KEY">
+            <string>$BUGFENDER_APP_KEY</string>
         </config-file>
 
-		<framework src="platforms/ios/FacebookSDK.framework" custom="true" />
+		<dependency id="cordova-plugin-cocoapod-support"/>
+		<pod id="BugfenderSDK" />
 
     </platform>
--->
 
 </plugin>
