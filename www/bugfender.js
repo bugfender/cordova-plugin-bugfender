@@ -33,30 +33,38 @@ setMaximumLocalStorageSize: function (bytes) {
 },
 
 log: function () {
-	//var text = util.format.apply(this, arguments);
-	var regex = /([^@]*)@.*\/([^:]*):(\d*)/;
-	var match = regex.exec(stacktrace()[4])
-	var func = match[1];
-	var file = match[2];
-	var line = match[3];
-	var text = "func: " + func + " file: " + file + " line: " + line + " message: " + util.format.apply(this, arguments);
-	exec(null, null, "Bugfender", "info", [text]);
+	logWithLevel("info", arguments);
 },
 
 error: function () {
-	exec(null, null, "Bugfender", "error", [util.format.apply(this, arguments)]);
+	logWithLevel("error", arguments);
 },
 
 warn: function () {
-	exec(null, null, "Bugfender", "warn", [util.format.apply(this, arguments)]);
+	logWithLevel("warn", arguments);
 },
 
 info: function () {
-	exec(null, null, "Bugfender", "info", [util.format.apply(this, arguments)]);
+	logWithLevel("info", arguments);
 },
 
 trace: function () {
-	exec(null, null, "Bugfender", "info", [util.format.apply(this, arguments)]); //TBD
+	logWithLevel("trace", arguments);
 },
 
 };
+
+var stacktraceLine = /(?:([^@]*)@)?.*\/([^:]*):(\d*)/;
+var logWithLevel = function(level, args) {
+	var st = stacktrace();
+	var match = stacktraceLine.exec(st[5]);
+	var func = match[1];
+	if(func == null)
+		func = "<anonymous>";
+	var file = match[2];
+	var line = Number(match[3]);
+	var tag = "";
+	var message = util.format.apply(this, args);
+
+	exec(null, null, "Bugfender", "log", [line, func, file, level, tag, message]);
+}

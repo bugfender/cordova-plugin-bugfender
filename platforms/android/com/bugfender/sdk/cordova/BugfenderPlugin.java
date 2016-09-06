@@ -34,19 +34,21 @@ public class BugfenderPlugin extends CordovaPlugin {
 
 		@Override
 		public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-			if (action.equals("info")) {
-				String message = args.getString(0);
-				Bugfender.d("", message);
-				callbackContext.success();
-				return true;
-			} else if (action.equals("warn")) {
-				String message = args.getString(0);
-				Bugfender.w("", message);
-				callbackContext.success();
-				return true;
-			} else if (action.equals("error")) {
-				String message = args.getString(0);
-				Bugfender.e("", message);
+			if (action.equals("log")) {
+				long lineNumber = args.getLong(0);
+				String method = args.getString(1);
+				String fileName = args.getString(2);
+				String levelString = args.getString(3);
+				String tag = args.getString(4);
+				String message = args.getString(5);
+
+				if (levelString == "error") {
+					Bugfender.e(tag, message);
+				} else if (levelString == "warn") {
+					Bugfender.w(tag, message);
+				} else { //TODO trace level
+					Bugfender.d(tag, message);
+				}
 				callbackContext.success();
 				return true;
 			} else if (action.equals("forceSendOnce")) {
