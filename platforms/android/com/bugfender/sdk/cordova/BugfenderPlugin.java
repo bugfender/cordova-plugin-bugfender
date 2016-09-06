@@ -34,9 +34,70 @@ public class BugfenderPlugin extends CordovaPlugin {
 
 		@Override
 		public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-			if (action.equals("log")) {
+			if (action.equals("info")) {
 				String message = args.getString(0);
-				System.out.println(message);
+				Bugfender.d("", message);
+				callbackContext.success();
+				return true;
+			} else if (action.equals("warn")) {
+				String message = args.getString(0);
+				Bugfender.w("", message);
+				callbackContext.success();
+				return true;
+			} else if (action.equals("error")) {
+				String message = args.getString(0);
+				Bugfender.e("", message);
+				callbackContext.success();
+				return true;
+			} else if (action.equals("forceSendOnce")) {
+				Bugfender.forceSendOnce();
+				callbackContext.success();
+				return true;
+			} else if (action.equals("getDeviceIdentifier")) {
+				String deviceId = Bugfender.getDeviceIdentifier();
+				callbackContext.success(deviceId);
+				return true;
+			} else if (action.equals("removeDeviceKey")) {
+				String key = args.getString(0);
+				Bugfender.removeDeviceKey(key);
+				callbackContext.success();
+				return true;
+			} else if (action.equals("sendIssue")) {
+				String title = args.getString(0);
+				String text = args.getString(1);
+				Bugfender.sendIssue(title, text);
+				callbackContext.success();
+				return true;
+			} else if (action.equals("setDeviceKey")) {
+				String key = args.getString(0);
+				Object value = args.get(1);
+				if(value instanceof String) {
+					Bugfender.setDeviceString(key, (String)value);
+					callbackContext.success();
+					return true;
+				} else if(value instanceof Float) {
+					Bugfender.setDeviceFloat(key, (Float)value);
+					callbackContext.success();
+					return true;
+				} else if(value instanceof Integer) {
+					Bugfender.setDeviceInteger(key, (Integer)value);
+					callbackContext.success();
+					return true;
+				} else if(value instanceof Boolean) {
+					Bugfender.setDeviceBoolean(key, (Boolean)value);
+					callbackContext.success();
+					return true;
+				}
+				return false;
+			} else if (action.equals("setForceEnabled")) {
+				Boolean enabled = args.getBoolean(0);
+				Bugfender.setForceEnabled(enabled);
+				callbackContext.success();
+				return true;
+			} else if (action.equals("setMaximumLocalStorageSize")) {
+				long size = args.getLong(0);
+				Bugfender.setMaximumLocalStorageSize(size);
+				callbackContext.success();
 				return true;
 			}
 			return false;
