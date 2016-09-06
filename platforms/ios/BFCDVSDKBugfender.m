@@ -10,8 +10,19 @@
         NSLog(@"Please set BUGFENDER_APP_KEY in config.xml");
         return;
     }
-    NSLog(@"Initializing Bugfender with app key %@", key);
-    [Bugfender enableAllWithToken:key];
+    [Bugfender activateLogger:key];
+
+    NSString *enabled = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BUGFENDER_AUTOMATIC"];
+    if(enabled == nil || [enabled isEqualToString:@"ALL"])
+        enabled == @"UI,LOG";
+
+    NSArray* enables = [enabled componentsSeparatedByString:@","];
+    if ([enables containsObject:@"UI"]) {
+        [Bugfender enableUIEventLogging];
+    }
+    if ([enables containsObject:@"LOG"]) {
+        [Bugfender enableNSLogLogging];
+    }
 }
 
 - (void)forceSendOnce:(CDVInvokedUrlCommand*)command

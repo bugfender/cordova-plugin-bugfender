@@ -21,11 +21,14 @@
     <js-module src="www/stacktrace.js" name="stacktrace">
     </js-module>
 
+    <preference name="BUGFENDER_APP_KEY" default="YOUR APP KEY HERE"/>
+    <preference name="BUGFENDER_AUTOMATIC" default="ALL"/>
+
     <platform name="android">
-        <preference name="BUGFENDER_APP_KEY" default="YOUR APP KEY HERE"/>
         <source-file src="platforms/android/res/values/bugfender.xml" target-dir="res/values" />
         <config-file target="res/values/bugfender.xml" parent="/*">
             <string name="BUGFENDER_APP_KEY">$BUGFENDER_APP_KEY</string>
+            <string name="BUGFENDER_AUTOMATIC">$BUGFENDER_AUTOMATIC</string>
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/*">
@@ -46,7 +49,13 @@
     </platform>
 
     <platform name="ios">
-        <preference name="BUGFENDER_APP_KEY" default="YOUR APP KEY HERE"/>
+        <config-file target="*-Info.plist" parent="BUGFENDER_APP_KEY">
+            <string>$BUGFENDER_APP_KEY</string>
+        </config-file>
+
+        <config-file target="*-Info.plist" parent="BUGFENDER_AUTOMATIC">
+            <string>$BUGFENDER_AUTOMATIC</string>
+        </config-file>
 
         <config-file target="config.xml" parent="/*">
             <feature name="Bugfender">
@@ -57,10 +66,6 @@
 
         <header-file src="platforms/ios/BFCDVSDKBugfender.h" />
         <source-file src="platforms/ios/BFCDVSDKBugfender.m" />
-
-        <config-file target="*-Info.plist" parent="BUGFENDER_APP_KEY">
-            <string>$BUGFENDER_APP_KEY</string>
-        </config-file>
 
 		<dependency id="cordova-plugin-cocoapod-support"/>
 		<pod id="BugfenderSDK" />

@@ -8,6 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.List;
+
 import android.app.Application;
 import android.content.Context;
 
@@ -19,17 +22,27 @@ public class BugfenderPlugin extends CordovaPlugin {
 		protected void pluginInitialize() {
 			int appResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_APP_KEY", "string", this.cordova.getActivity().getPackageName());
 			String key = this.cordova.getActivity().getString(appResId);
-		    if (key == "") {
+		    if (key.length() == 0) {
 				System.out.println("Please set BUGFENDER_APP_KEY in config.xml");
 				return;
 			}
-		    System.out.println("Initializing Bugfender with app key " + key);
+
+			int enablesResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_AUTOMATIC", "string", this.cordova.getActivity().getPackageName());
+			String enabled = this.cordova.getActivity().getString(enablesResId);
+		    if (enabled.length() == 0 || "ALL".equals(enabled))
+				enabled = "UI,LOG";
+			List<String> enables = Arrays.asList(enabled.split(","));
 
 			Context context=this.cordova.getActivity().getApplicationContext();
-			Application app=this.cordova.getActivity().getApplication();
 			Bugfender.init(context, key, false);
-		    Bugfender.enableLogcatLogging();
-			Bugfender.enableUIEventLogging(app);
+
+			if(enables.contains("LOG")) {
+		    	Bugfender.enableLogcatLogging();
+			}	
+			if(enables.contains("UI")) {
+				Application app=this.cordova.getActivity().getApplication();
+				Bugfender.enableUIEventLogging(app);
+			}	
 		}
 
 		@Override
