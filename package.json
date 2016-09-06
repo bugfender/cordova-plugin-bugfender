@@ -1,0 +1,25 @@
+{
+  "name": "cordova-plugin-bugfender",
+  "version": "1.0.0",
+  "description": "Cordova Bugfender Plugin",
+  "cordova": {
+    "id": "cordova-plugin-bugfender",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugfender/cordova-plugin-bugfender"
+  },
+  "keywords": [
+    "cordova",
+    "device",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "Bugfender Team",
+  "license": "See https://bugfender.com/terms"
+}
