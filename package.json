@@ -15,7 +15,8 @@
   },
   "keywords": [
     "cordova",
-    "device",
+    "bugfender",
+    "logs",
     "ecosystem:cordova",
     "cordova-android",
     "cordova-ios"
