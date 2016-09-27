@@ -15,6 +15,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.bugfender.sdk.Bugfender;
+import com.bugfender.sdk.LogLevel;
 
 public class BugfenderPlugin extends CordovaPlugin {
 
@@ -48,20 +49,21 @@ public class BugfenderPlugin extends CordovaPlugin {
 		@Override
 		public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 			if (action.equals("log")) {
-				long lineNumber = args.getLong(0);
+				int lineNumber = args.getInt(0);
 				String method = args.getString(1);
 				String fileName = args.getString(2);
 				String levelString = args.getString(3);
 				String tag = args.getString(4);
 				String message = args.getString(5);
 
-				if (levelString == "error") {
-					Bugfender.e(tag, message);
-				} else if (levelString == "warn") {
-					Bugfender.w(tag, message);
-				} else { //TODO trace level
-					Bugfender.d(tag, message);
+				LogLevel logLevel = LogLevel.Debug;
+				if ("error".equals(levelString)) {
+					logLevel = LogLevel.Error;
+				} else if ("warn".equals(levelString)) {
+					logLevel = LogLevel.Warning;
 				}
+				Bugfender.log(lineNumber, method, fileName, logLevel, tag, message);
+				
 				callbackContext.success();
 				return true;
 			} else if (action.equals("forceSendOnce")) {

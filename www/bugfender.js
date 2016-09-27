@@ -54,15 +54,21 @@ trace: function () {
 
 };
 
-var stacktraceLine = /(?:([^@]*)@)?.*\/([^:]*):(\d*)/;
+var stacktraceLine = /(?:([^@]*)@)?(?:.*\/)?([^:]*)(?::(\d*))?/;
 var logWithLevel = function(level, args) {
 	var st = stacktrace();
 	var match = stacktraceLine.exec(st[5]);
-	var func = match[1];
-	if(func == null)
-		func = "<anonymous>";
-	var file = match[2];
-	var line = Number(match[3]);
+	var func = "<anonymous>";
+	var file = "";
+	var line = "";
+	if(match != null) {
+		if(match.length >= 1 && match[1] != null)
+			func = match[1];
+		if(match.length >= 2 && match[2] != null)
+			file = match[2];
+		if(match.length >= 3 && match[3] != null)
+			line = Number(match[3]);
+	}
 	var tag = "";
 	var message = util.format.apply(this, args);
 
