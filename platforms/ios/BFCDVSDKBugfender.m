@@ -106,7 +106,9 @@
 
 - (void)log:(CDVInvokedUrlCommand*)command
 {
-    NSInteger lineNumber = [[command.arguments objectAtIndex:0] unsignedLongLongValue];
+    NSInteger lineNumber = 0;
+    if([[command.arguments objectAtIndex:0] isKindOfClass:NSNumber.class])
+        [[command.arguments objectAtIndex:0] unsignedLongLongValue];
     NSString* method = [command.arguments objectAtIndex:1];
     NSString* fileName = [command.arguments objectAtIndex:2];
     NSString* levelString = [command.arguments objectAtIndex:3];
