@@ -1,5 +1,5 @@
 # cordova-plugin-bugfender
-This plugin adds Bugfender support for Cordova applications under iOS and Android.
+This plugin adds Bugfender support for Cordova applications under iOS and Android. Also works on Cordova-based projects such as Phonegap and Ionic.
 
 ## Requirements
 For iOS, you will need macOS and [CocoaPods](http://cocoapods.org/) installed on your system.
