@@ -31,7 +31,7 @@ public class BugfenderPlugin extends CordovaPlugin {
 			int enablesResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_AUTOMATIC", "string", this.cordova.getActivity().getPackageName());
 			String enabled = this.cordova.getActivity().getString(enablesResId);
 		    if (enabled.length() == 0 || "ALL".equals(enabled))
-				enabled = "UI,LOG";
+				enabled = "UI,LOG,CRASH";
 			List<String> enables = Arrays.asList(enabled.split(","));
 
 			Context context=this.cordova.getActivity().getApplicationContext();
@@ -39,6 +39,9 @@ public class BugfenderPlugin extends CordovaPlugin {
 
 			if(enables.contains("LOG")) {
 		    	Bugfender.enableLogcatLogging();
+			}	
+			if(enables.contains("CRASH")) {
+		    	Bugfender.enableCrashReporting();
 			}	
 			if(enables.contains("UI")) {
 				Application app=this.cordova.getActivity().getApplication();

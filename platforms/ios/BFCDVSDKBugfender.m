@@ -14,14 +14,14 @@
 
     NSString *enabled = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BUGFENDER_AUTOMATIC"];
     if(enabled == nil || [enabled isEqualToString:@"ALL"])
-        enabled == @"UI,LOG";
+        enabled = @"UI,CRASH";
 
     NSArray* enables = [enabled componentsSeparatedByString:@","];
     if ([enables containsObject:@"UI"]) {
         [Bugfender enableUIEventLogging];
     }
-    if ([enables containsObject:@"LOG"]) {
-        [Bugfender enableNSLogLogging];
+    if ([enables containsObject:@"CRASH"]) {
+        [Bugfender enableCrashReporting];
     }
 }
 
@@ -123,7 +123,7 @@
     }
     //TODO trace level
     
-    [Bugfender logLineNumber:lineNumber method:method file:fileName level:level tag:tag message:message];
+    [Bugfender logWithLineNumber:lineNumber method:method file:fileName level:level tag:tag message:message];
     
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
