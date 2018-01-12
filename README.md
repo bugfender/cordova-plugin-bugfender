@@ -4,6 +4,12 @@ This plugin adds Bugfender support for Cordova applications under iOS and Androi
 ## Requirements
 For iOS, you will need macOS and [CocoaPods](http://cocoapods.org/) installed on your system. iOS deployment target version is required to be 8.0 at least.
 
+You can set the minimum version by adding this preference to the `<platform name="ios">` tag in your `config.xml`:
+
+```
+ <preference name="deployment-target" value="8.0" />
+```
+
 ## Installing
 In the command line, run (replace `XXX` with your app key):
 
