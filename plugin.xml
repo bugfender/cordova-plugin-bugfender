@@ -25,8 +25,7 @@
     <preference name="BUGFENDER_AUTOMATIC" default="ALL"/>
 
     <platform name="android">
-        <source-file src="platforms/android/res/values/bugfender.xml" target-dir="res/values" />
-        <config-file target="res/values/bugfender.xml" parent="/*">
+        <config-file target="res/values/strings.xml" parent="/*">
             <string name="BUGFENDER_APP_KEY">$BUGFENDER_APP_KEY</string>
             <string name="BUGFENDER_AUTOMATIC">$BUGFENDER_AUTOMATIC</string>
         </config-file>
