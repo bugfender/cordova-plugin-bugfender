@@ -5,31 +5,38 @@ var exec = require("cordova/exec"),
 module.exports = {
 
 forceSendOnce: function () {
-	exec(null, null, "Bugfender", "forceSendOnce", []);
+	if(device.platform != "browser")
+		exec(null, null, "Bugfender", "forceSendOnce", []);
 },
 
 getDeviceIdentifier: function (s) {
-	exec(s, null, "Bugfender", "getDeviceIdentifier", []);
+	if(device.platform != "browser")
+		exec(s, null, "Bugfender", "getDeviceIdentifier", []);
 },
 
 removeDeviceKey: function (key) {
-	exec(null, null, "Bugfender", "removeDeviceKey", [key]);
+	if(device.platform != "browser")
+		exec(null, null, "Bugfender", "removeDeviceKey", [key]);
 },
 
 sendIssue: function (title, text) {
-	exec(null, null, "Bugfender", "sendIssue", [title, text]);
+	if(device.platform != "browser")
+		exec(null, null, "Bugfender", "sendIssue", [title, text]);
 },
 
 setDeviceKey: function (key, value) {
-	exec(null, null, "Bugfender", "setDeviceKey", [key, value]);
+	if(device.platform != "browser")
+		exec(null, null, "Bugfender", "setDeviceKey", [key, value]);
 },
 
 setForceEnabled: function (enabled) {
-	exec(null, null, "Bugfender", "setForceEnabled", [enabled]);
+	if(device.platform != "browser")
+		exec(null, null, "Bugfender", "setForceEnabled", [enabled]);
 },
 
 setMaximumLocalStorageSize: function (bytes) {
-	exec(null, null, "Bugfender", "setMaximumLocalStorageSize", [bytes]);
+	if(device.platform != "browser")
+		exec(null, null, "Bugfender", "setMaximumLocalStorageSize", [bytes]);
 },
 
 log: function () {
@@ -52,8 +59,17 @@ trace: function () {
 	logWithLevel("trace", arguments);
 },
 
+setPrintToConsole: function(v) {
+	printToConsole = v;
+},
+
+getPrintToConsole: function() {
+	return printToConsole;
+}
+
 };
 
+var printToConsole = true;
 var stacktraceLine = /(?:([^@]*)@)?(?:.*\/)?([^:]*)(?::(\d*))?/;
 var logWithLevel = function(level, args) {
 	var st = stacktrace();
@@ -72,5 +88,8 @@ var logWithLevel = function(level, args) {
 	var tag = "";
 	var message = util.format.apply(this, args);
 
-	exec(null, null, "Bugfender", "log", [line, func, file, level, tag, message]);
+	if(device.platform != "browser")
+		exec(null, null, "Bugfender", "log", [line, func, file, level, tag, message]);
+	if(printToConsole)
+		console.log(message);
 }
