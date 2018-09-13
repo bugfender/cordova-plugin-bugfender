@@ -17,6 +17,12 @@ In the command line, run (replace `XXX` with your app key):
 cordova plugin add cordova-plugin-bugfender --variable BUGFENDER_APP_KEY=XXX --save
 ```
 
+**If using TypeScript:** you also need to declare the Bugfender global variable in the files where you need it:
+
+```
+declare var Bugfender: any;
+```
+
 For a basic use of Bugfender, that's all you need to do. Read on to learn more advanced options.
 
 ## Configuration variables
