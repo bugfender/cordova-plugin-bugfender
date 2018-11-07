@@ -12,13 +12,12 @@
     <engines>
             <engine name="cordova" version=">=5.0.0" />
     </engines>
+    <dependency id="cordova-plugin-device" />
 
     <js-module src="www/bugfender.js" name="bugfender">
         <clobbers target="window.Bugfender" />
     </js-module>
     <js-module src="www/bf-util.js" name="bf-util">
-    </js-module>
-    <js-module src="www/stacktrace.js" name="stacktrace">
     </js-module>
 
     <preference name="BUGFENDER_APP_KEY" default="YOUR APP KEY HERE"/>

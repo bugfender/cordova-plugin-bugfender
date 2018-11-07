@@ -1,42 +1,47 @@
-var exec = require("cordova/exec"),
-	util = require("./bf-util"),
-	stacktrace = require("./stacktrace");
+var	util = require("./bf-util");
 
 module.exports = {
 
 forceSendOnce: function () {
-	if(device.platform != "browser")
-		exec(null, null, "Bugfender", "forceSendOnce", []);
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(null, null, "Bugfender", "forceSendOnce", []);
 },
 
 getDeviceIdentifier: function (s) {
-	if(device.platform != "browser")
-		exec(s, null, "Bugfender", "getDeviceIdentifier", []);
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(s, null, "Bugfender", "getDeviceIdentifier", []);
 },
 
 removeDeviceKey: function (key) {
-	if(device.platform != "browser")
-		exec(null, null, "Bugfender", "removeDeviceKey", [key]);
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(null, null, "Bugfender", "removeDeviceKey", [key]);
 },
 
 sendIssue: function (title, text) {
-	if(device.platform != "browser")
-		exec(null, null, "Bugfender", "sendIssue", [title, text]);
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(null, null, "Bugfender", "sendIssue", [title, text]);
 },
 
 setDeviceKey: function (key, value) {
-	if(device.platform != "browser")
-		exec(null, null, "Bugfender", "setDeviceKey", [key, value]);
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(null, null, "Bugfender", "setDeviceKey", [key, value]);
 },
 
 setForceEnabled: function (enabled) {
-	if(device.platform != "browser")
-		exec(null, null, "Bugfender", "setForceEnabled", [enabled]);
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(null, null, "Bugfender", "setForceEnabled", [enabled]);
 },
 
 setMaximumLocalStorageSize: function (bytes) {
-	if(device.platform != "browser")
-		exec(null, null, "Bugfender", "setMaximumLocalStorageSize", [bytes]);
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(null, null, "Bugfender", "setMaximumLocalStorageSize", [bytes]);
 },
 
 log: function () {
@@ -60,19 +65,23 @@ trace: function () {
 },
 
 setPrintToConsole: function(v) {
+	checkLoaded();
 	printToConsole = v;
 },
 
 getPrintToConsole: function() {
+	checkLoaded();
 	return printToConsole;
 }
 
 };
+module.exports.Bugfender = module.exports;
 
 var printToConsole = true;
 var stacktraceLine = /(?:([^@]*)@)?(?:.*\/)?([^:]*)(?::(\d*))?/;
 var logWithLevel = function(level, args) {
-	var st = stacktrace();
+	checkLoaded();
+	var st = new Error().stack;
 	var match = stacktraceLine.exec(st[5]);
 	var func = "<anonymous>";
 	var file = "";
@@ -88,8 +97,20 @@ var logWithLevel = function(level, args) {
 	var tag = "";
 	var message = util.format.apply(this, args);
 
-	if(device.platform != "browser")
-		exec(null, null, "Bugfender", "log", [line, func, file, level, tag, message]);
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(null, null, "Bugfender", "log", [line, func, file, level, tag, message]);
 	if(printToConsole)
 		console.log(message);
+}
+
+var notLoadedWarningShown = false;
+var checkLoaded = function() {
+  if(!window["cordova"] && !notLoadedWarningShown) {
+	console.warn("Bugfender: Cordova is not loaded, probably because running on an unsupported platform (eg. browser) or Cordova plugins not loaded yet, did you include cordova.js? Logs will not be sent")
+	notLoadedWarningShown = true
+  }
+  if(window["device"] && window["device"].platform == "browser" && !notLoadedWarningShown) {
+	console.warn("Bugfender: Browser environment unsupported. Logs will not be sent")
+	notLoadedWarningShown = true
+  }
 }
