@@ -77,15 +77,28 @@ getPrintToConsole: function() {
 };
 module.exports.Bugfender = module.exports;
 
+/* example on iOS:
+logWithLevel@file:///Users/x/Library/Developer/CoreSimulator/Devices/E7784688-3697-4254-9B15-D0EB21E7927E/data/Containers/Bundle/Application/C101081E-FB05-438F-AF1F-6CC1F64AF220/HelloCordova.app/www/plugins/cordova-plugin-bugfender/www/bugfender.js:85:20
+log@file:///Users/x/Library/Developer/CoreSimulator/Devices/E7784688-3697-4254-9B15-D0EB21E7927E/data/Containers/Bundle/Application/C101081E-FB05-438F-AF1F-6CC1F64AF220/HelloCordova.app/www/plugins/cordova-plugin-bugfender/www/bugfender.js:49:14
+onDeviceReady@file:///Users/x/Library/Developer/CoreSimulator/Devices/E7784688-3697-4254-9B15-D0EB21E7927E/data/Containers/Bundle/Application/C101081E-FB05-438F-AF1F-6CC1F64AF220/HelloCordova.app/www/js/index.js:31:16
+
+* example on Android:
+Error
+	at logWithLevel (file:///android_asset/www/plugins/cordova-plugin-bugfender/www/bugfender.js:85:11)
+	at Object.log (file:///android_asset/www/plugins/cordova-plugin-bugfender/www/bugfender.js:49:2)
+	at Object.onDeviceReady (file:///android_asset/www/js/index.js:31:13)
+*/
+
 var printToConsole = true;
-var stacktraceLine = /(?:([^@]*)@)?(?:.*\/)?([^:]*)(?::(\d*))?/;
+var stacktraceLine = /(?:\W*at )?(?:(?:[^.]+\.)?([^@ ]*)[ @])?(?:.*\/)?([^:]*)(?::(\d*))?/;
 var logWithLevel = function(level, args) {
 	checkLoaded();
-	var st = new Error().stack;
-	var match = stacktraceLine.exec(st[5]);
+	var st = new Error().stack.split('\n');
+	var caller = st[st[0].indexOf('Error') == 0 ? 3 : 2];
+	var match = stacktraceLine.exec(caller);
 	var func = "<anonymous>";
 	var file = "";
-	var line = "";
+	var line = 0;
 	if(match != null) {
 		if(match.length >= 1 && match[1] != null)
 			func = match[1];
