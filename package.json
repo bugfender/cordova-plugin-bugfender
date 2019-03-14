@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-bugfender",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Cordova Bugfender Plugin",
   "cordova": {
     "id": "cordova-plugin-bugfender",
