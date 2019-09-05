@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var path = require("path");
+var semver = require('semver');
 
 module.exports = function (context) {
     var rootPath = context.opts.projectRoot;
@@ -17,9 +18,7 @@ module.exports = function (context) {
 }
 
 function getConfigParser(context, config) {
-	var semver = context.requireCordovaModule('semver');
 	var ConfigParser;
-
 	if (semver.lt(context.opts.cordova.version, '5.4.0')) {
 	    ConfigParser = context.requireCordovaModule('cordova-lib/src/ConfigParser/ConfigParser');
 	} else {

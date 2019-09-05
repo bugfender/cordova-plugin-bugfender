@@ -22,5 +22,8 @@
     "cordova-ios"
   ],
   "author": "Bugfender Team",
-  "license": "See https://bugfender.com/terms"
+  "license": "See https://bugfender.com/terms",
+  "dependencies": {
+    "semver": "^6.3.0"
+  }
 }

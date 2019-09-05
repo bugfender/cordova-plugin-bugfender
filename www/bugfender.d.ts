@@ -18,9 +18,11 @@ export declare class Bugfender {
     static setForceEnabled(enabled: boolean): void;
     static setMaximumLocalStorageSize(bytes: number): void;
     static log(...details: any[]): void;
+    static fatal(...details: any[]): void;
     static error(...details: any[]): void;
     static warn(...details: any[]): void;
     static info(...details: any[]): void;
+    static debug(...details: any[]): void;
     static trace(...details: any[]): void;
     private static printToConsole;
     static setPrintToConsole(print: boolean): void;

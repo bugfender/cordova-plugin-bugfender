@@ -45,7 +45,11 @@ setMaximumLocalStorageSize: function (bytes) {
 },
 
 log: function () {
-	logWithLevel("info", arguments);
+	logWithLevel("debug", arguments);
+},
+
+fatal: function () {
+	logWithLevel("fatal", arguments);
 },
 
 error: function () {
@@ -58,6 +62,10 @@ warn: function () {
 
 info: function () {
 	logWithLevel("info", arguments);
+},
+
+debug: function () {
+	logWithLevel("debug", arguments);
 },
 
 trace: function () {

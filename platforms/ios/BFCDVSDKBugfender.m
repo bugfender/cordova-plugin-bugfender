@@ -115,13 +115,18 @@
     NSString* tag = [command.arguments objectAtIndex:4];
     NSString* message = [command.arguments objectAtIndex:5];
     
-    BFLogLevel level = BFLogLevelDefault;
-    if([levelString isEqualToString:@"error"]) {
+    BFLogLevel level = BFLogLevelDefault; // in the future will probably be BFLogLevelDebug to avoid misunderstandings
+    if([levelString isEqualToString:@"fatal"]) {
+        level = BFLogLevelFatal;
+    } else if([levelString isEqualToString:@"error"]) {
         level = BFLogLevelError;
     } else if([levelString isEqualToString:@"warn"]) {
         level = BFLogLevelWarning;
+    } else if([levelString isEqualToString:@"info"]) {
+        level = BFLogLevelInfo;
+    } else if([levelString isEqualToString:@"trace"]) {
+        level = BFLogLevelTrace;
     }
-    //TODO trace level
     
     [Bugfender logWithLineNumber:lineNumber method:method file:fileName level:level tag:tag message:message];
     

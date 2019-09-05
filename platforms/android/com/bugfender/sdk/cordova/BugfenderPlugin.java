@@ -60,10 +60,16 @@ public class BugfenderPlugin extends CordovaPlugin {
 				String message = args.getString(5);
 
 				LogLevel logLevel = LogLevel.Debug;
-				if ("error".equals(levelString)) {
+				if ("fatal".equals(levelString)) {
+					logLevel = LogLevel.Fatal;
+				} else if ("error".equals(levelString)) {
 					logLevel = LogLevel.Error;
 				} else if ("warn".equals(levelString)) {
 					logLevel = LogLevel.Warning;
+				} else if ("info".equals(levelString)) {
+					logLevel = LogLevel.Info;
+				} else if ("trace".equals(levelString)) {
+					logLevel = LogLevel.Trace;
 				}
 				Bugfender.log(lineNumber, method, fileName, logLevel, tag, message);
 				
