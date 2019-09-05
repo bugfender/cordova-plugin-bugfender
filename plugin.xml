@@ -69,8 +69,7 @@
         <header-file src="platforms/ios/BFCDVSDKBugfender.h" />
         <source-file src="platforms/ios/BFCDVSDKBugfender.m" />
 
-	<dependency id="cordova-plugin-cocoapod-support"/>
-	<pod name="BugfenderSDK/ObjC" version="~> 1.5" />
+	<framework src="BugfenderSDK/ObjC" type="podspec" spec="~> 1.5.0" />
         <hook type="before_plugin_install" src="scripts/check_ios_target.js"/>
     </platform>
 
