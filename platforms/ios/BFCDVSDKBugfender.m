@@ -5,6 +5,16 @@
 
 - (void)pluginInitialize
 {
+    NSString *baseURL = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BUGFENDER_BASE_URL"];
+    if(![@"unset" isEqualToString:baseURL]) {
+        [Bugfender setBaseURL:[NSURL URLWithString:baseURL]];
+    }
+
+    NSString *apiURL = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BUGFENDER_API_URL"];
+    if(![@"unset" isEqualToString:apiURL]) {
+        [Bugfender setApiURL:[NSURL URLWithString:apiURL]];
+    }
+
     NSString *key = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BUGFENDER_APP_KEY"];
     if(key == nil) {
         NSLog(@"Please set BUGFENDER_APP_KEY in config.xml");
@@ -54,9 +64,9 @@
 {
     NSString* title = [command.arguments objectAtIndex:0];
     NSString* text = [command.arguments objectAtIndex:1];
-    [Bugfender sendIssueWithTitle:title text:text];
+    NSURL* url = [Bugfender sendIssueReturningUrlWithTitle:title text:text];
 
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:url.absoluteString];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -131,6 +141,63 @@
     [Bugfender logWithLineNumber:lineNumber method:method file:fileName level:level tag:tag message:message];
     
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)getDeviceUrl:(CDVInvokedUrlCommand*)command
+{
+    NSURL* deviceURL = [Bugfender deviceIdentifierUrl];
+
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:deviceURL.absoluteString];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)getSessionUrl:(CDVInvokedUrlCommand*)command
+{
+    NSURL* sessionURL = [Bugfender sessionIdentifierUrl];
+
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:sessionURL.absoluteString];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)showUserFeedbackUI:(CDVInvokedUrlCommand*)command
+{
+    NSString* title = [command.arguments objectAtIndex:0];
+    NSString* hint = [command.arguments objectAtIndex:1];
+    NSString* subjectHint = [command.arguments objectAtIndex:2];
+    NSString* messageHint = [command.arguments objectAtIndex:3];
+    NSString* sendButtonText = [command.arguments objectAtIndex:4];
+    NSString* cancelButtonText = [command.arguments objectAtIndex:5];
+    BFUserFeedbackNavigationController *nvc = [Bugfender userFeedbackViewControllerWithTitle:title
+                                                                                        hint:hint
+                                                                          subjectPlaceholder:subjectHint
+                                                                          messagePlaceholder:messageHint
+                                                                             sendButtonTitle:sendButtonText
+                                                                           cancelButtonTitle:cancelButtonText
+                                                                                  completion:^(BOOL feedbackSent, NSURL * _Nullable __strong url) {
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:feedbackSent];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+    [self.viewController presentViewController:nvc animated:YES completion:nil];
+}
+
+- (void)sendCrash:(CDVInvokedUrlCommand*)command
+{
+    NSString* title = [command.arguments objectAtIndex:0];
+    NSString* text = [command.arguments objectAtIndex:1];
+    NSURL* url = [Bugfender sendCrashWithTitle:title text:text];
+
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:url.absoluteString];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)sendUserFeedback:(CDVInvokedUrlCommand*)command
+{
+    NSString* title = [command.arguments objectAtIndex:0];
+    NSString* text = [command.arguments objectAtIndex:1];
+    NSURL* url = [Bugfender sendUserFeedbackReturningUrlWithSubject:title message:text];
+
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:url.absoluteString];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 

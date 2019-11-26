@@ -20,7 +20,7 @@ pod repo update
 In the command line, run (replace `XXX` with your app key):
 
 ```
-cordova plugin add cordova-plugin-bugfender --variable BUGFENDER_APP_KEY=XXX --save
+cordova plugin add cordova-plugin-bugfender --variable BUGFENDER_APP_KEY=XXX --variable BUGFENDER_AUTOMATIC=UI,CRASH --save
 ```
 
 **If using TypeScript:** you also need to declare the Bugfender global variable in the files where you need it:
@@ -65,6 +65,9 @@ The `BUGFENDER_AUTOMATIC` variable is a comma separated set of the following val
 * `ALL`: all automated loggers are enabled. As of today, this is equivalent to `UI,LOG,CRASH`, but more loggers could be included in the future. This enables all of them.
 
 You can specify this variable when installing the plugin as a `--variable`, for example `cordova plugin add cordova-plugin-bugfender --variable BUGFENDER_APP_KEY=XXX --variable BUGFENDER_AUTOMATIC=NONE --save`.
+
+### Base URLs (optional)
+If you have your own Bugfender instance, you will need to set `BUGFENDER_API_URL` and `BUGFENDER_BASE_URL` according to the provided instructions.
 
 ## Reference
 

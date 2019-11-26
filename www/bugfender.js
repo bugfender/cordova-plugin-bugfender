@@ -20,10 +20,10 @@ removeDeviceKey: function (key) {
 		window["cordova"].exec(null, null, "Bugfender", "removeDeviceKey", [key]);
 },
 
-sendIssue: function (title, text) {
+sendIssue: function (title, markdown, callback) {
 	checkLoaded();
 	if(window["device"] && window["device"].platform != "browser")
-		window["cordova"].exec(null, null, "Bugfender", "sendIssue", [title, text]);
+		window["cordova"].exec(callback, null, "Bugfender", "sendIssue", [title, markdown]);
 },
 
 setDeviceKey: function (key, value) {
@@ -80,7 +80,37 @@ setPrintToConsole: function(v) {
 getPrintToConsole: function() {
 	checkLoaded();
 	return printToConsole;
-}
+},
+
+getDeviceUrl: function(callback) {
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(callback, null, "Bugfender", "getDeviceUrl", []);
+},
+
+getSessionUrl: function (callback) {
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(callback, null, "Bugfender", "getSessionUrl", []);
+},
+
+sendCrash: function(title, markdown, callback) {
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(callback, null, "Bugfender", "sendCrash", [title, markdown]);
+},
+
+sendUserFeedback(title, markdown, callback) {
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(callback, null, "Bugfender", "sendUserFeedback", [title, markdown]);
+},
+
+showUserFeedbackUI: function(title, hint, subjectHint, messageHint, sendButtonText, cancelButtonText, callback) {
+	checkLoaded();
+	if(window["device"] && window["device"].platform != "browser")
+		window["cordova"].exec(callback, callback, "Bugfender", "showUserFeedbackUI", [title, hint, subjectHint, messageHint, sendButtonText, cancelButtonText]);
+},
 
 };
 module.exports.Bugfender = module.exports;

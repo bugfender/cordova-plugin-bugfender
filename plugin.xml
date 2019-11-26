@@ -20,8 +20,10 @@
     <js-module src="www/bf-util.js" name="bf-util">
     </js-module>
 
-    <preference name="BUGFENDER_APP_KEY" default="YOUR APP KEY HERE"/>
+    <preference name="BUGFENDER_APP_KEY"/>
     <preference name="BUGFENDER_AUTOMATIC" default="ALL"/>
+    <preference name="BUGFENDER_BASE_URL" default="unset"/>
+    <preference name="BUGFENDER_API_URL" default="unset"/>
 
     <platform name="browser">
         <info>cordova-plugin-bugfender ignores all method calls when being used in a browser</info>
@@ -31,6 +33,8 @@
         <config-file target="res/values/strings.xml" parent="/*">
             <string name="BUGFENDER_APP_KEY">$BUGFENDER_APP_KEY</string>
             <string name="BUGFENDER_AUTOMATIC">$BUGFENDER_AUTOMATIC</string>
+            <string name="BUGFENDER_BASE_URL">$BUGFENDER_BASE_URL</string>
+            <string name="BUGFENDER_API_URL">$BUGFENDER_API_URL</string>
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/*">
@@ -59,6 +63,14 @@
             <string>$BUGFENDER_AUTOMATIC</string>
         </config-file>
 
+        <config-file target="*-Info.plist" parent="BUGFENDER_BASE_URL">
+            <string>$BUGFENDER_BASE_URL</string>
+        </config-file>
+
+        <config-file target="*-Info.plist" parent="BUGFENDER_API_URL">
+            <string>$BUGFENDER_API_URL</string>
+        </config-file>
+
         <config-file target="config.xml" parent="/*">
             <feature name="Bugfender">
                 <param name="ios-package" value="BFCDVSDKBugfender" />
@@ -69,7 +81,14 @@
         <header-file src="platforms/ios/BFCDVSDKBugfender.h" />
         <source-file src="platforms/ios/BFCDVSDKBugfender.m" />
 
-	    <framework src="BugfenderSDK/ObjC" type="podspec" spec="~> 1.7.0" />
+        <podspec>
+            <config>
+                <source url="https://github.com/CocoaPods/Specs.git"/>
+            </config>
+            <pods use-frameworks="true">
+                <pod name="BugfenderSDK/ObjC" spec="~> 1.7.0" />
+            </pods>
+        </podspec>
         <hook type="before_plugin_install" src="scripts/check_ios_target.js"/>
     </platform>
 
