@@ -100,7 +100,7 @@ sendCrash: function(title, markdown, callback) {
 		window["cordova"].exec(callback, null, "Bugfender", "sendCrash", [title, markdown]);
 },
 
-sendUserFeedback(title, markdown, callback) {
+sendUserFeedback: function(title, markdown, callback) {
 	checkLoaded();
 	if(window["device"] && window["device"].platform != "browser")
 		window["cordova"].exec(callback, null, "Bugfender", "sendUserFeedback", [title, markdown]);
