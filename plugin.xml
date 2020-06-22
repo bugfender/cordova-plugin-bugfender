@@ -3,7 +3,7 @@
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-plugin-bugfender"
-    version="1.3.0">
+    version="2.0.0">
     <name>Bugfender</name>
     <description>Bugfender integration for Cordova apps</description>
     <license>See https://bugfender.com</license>
@@ -11,6 +11,8 @@
 
     <engines>
             <engine name="cordova" version=">=5.0.0" />
+            <engine name="cordova-android" version=">=7.0.0" />
+            <engine name="cordova-ios" version=">=5.1.0" />
     </engines>
     <dependency id="cordova-plugin-device" />
 
@@ -24,6 +26,7 @@
     <preference name="BUGFENDER_AUTOMATIC" default="ALL"/>
     <preference name="BUGFENDER_BASE_URL" default="unset"/>
     <preference name="BUGFENDER_API_URL" default="unset"/>
+    <preference name="BUGFENDER_HIDE_DEVICE_NAME" default="unset"/>
 
     <platform name="browser">
         <info>cordova-plugin-bugfender ignores all method calls when being used in a browser</info>
@@ -35,6 +38,7 @@
             <string name="BUGFENDER_AUTOMATIC">$BUGFENDER_AUTOMATIC</string>
             <string name="BUGFENDER_BASE_URL">$BUGFENDER_BASE_URL</string>
             <string name="BUGFENDER_API_URL">$BUGFENDER_API_URL</string>
+            <string name="BUGFENDER_HIDE_DEVICE_NAME">$BUGFENDER_HIDE_DEVICE_NAME</string>
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/*">
@@ -71,6 +75,10 @@
             <string>$BUGFENDER_API_URL</string>
         </config-file>
 
+        <config-file target="*-Info.plist" parent="BUGFENDER_HIDE_DEVICE_NAME">
+            <string>$BUGFENDER_HIDE_DEVICE_NAME</string>
+        </config-file>
+
         <config-file target="config.xml" parent="/*">
             <feature name="Bugfender">
                 <param name="ios-package" value="BFCDVSDKBugfender" />
@@ -82,11 +90,11 @@
         <source-file src="platforms/ios/BFCDVSDKBugfender.m" />
 
         <podspec>
-            <config>
-                <source url="https://github.com/CocoaPods/Specs.git"/>
-            </config>
-            <pods use-frameworks="true">
-                <pod name="BugfenderSDK/ObjC" spec="~> 1.7.0" />
+          <config>
+            <source url="https://cdn.cocoapods.org/"/>
+          </config>
+          <pods use-frameworks="true">
+                <pod name="BugfenderSDK" spec="~> 1.9.2" />
             </pods>
         </podspec>
         <hook type="before_plugin_install" src="scripts/check_ios_target.js"/>

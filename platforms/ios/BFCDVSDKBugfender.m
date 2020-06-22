@@ -5,6 +5,11 @@
 
 - (void)pluginInitialize
 {
+    NSString *hideDeviceName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BUGFENDER_HIDE_DEVICE_NAME"];
+    if(![@"unset" isEqualToString:hideDeviceName]) {
+        [Bugfender overrideDeviceName:@"Unknown"];
+    }
+
     NSString *baseURL = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BUGFENDER_BASE_URL"];
     if(![@"unset" isEqualToString:baseURL]) {
         [Bugfender setBaseURL:[NSURL URLWithString:baseURL]];
@@ -40,14 +45,6 @@
     [Bugfender forceSendOnce];
 
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
-- (void)getDeviceIdentifier:(CDVInvokedUrlCommand*)command
-{
-    NSString* deviceId = [Bugfender deviceIdentifier];
-
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:deviceId];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 

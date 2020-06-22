@@ -71,6 +71,9 @@ You can specify this variable when installing the plugin as a `--variable`, for 
 ### Base URLs (optional)
 If you have your own Bugfender instance, you will need to set `BUGFENDER_API_URL` and `BUGFENDER_BASE_URL` according to the provided instructions.
 
+### Hide device name
+The `BUGFENDER_HIDE_DEVICE_NAME` enables hiding the device name if you do not want to collect it automatically. Set it to any value, for example `--variable BUGFENDER_HIDE_DEVICE_NAME=YES`.
+
 ## Reference
 
 ### Manual logging

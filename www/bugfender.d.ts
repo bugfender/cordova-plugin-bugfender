@@ -11,7 +11,6 @@
  */
 export declare class Bugfender {
     static forceSendOnce(): void;
-    static getDeviceIdentifier(callback: (id: string) => void): void;
     static removeDeviceKey(key: string): void;
     static sendIssue(title: string, markdown: string, callback?: (url: string) => void): void;
     static setDeviceKey(key: string, value: string): void;

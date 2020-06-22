@@ -28,6 +28,12 @@ public class BugfenderPlugin extends CordovaPlugin {
 
 		@Override
 		protected void pluginInitialize() {
+			int hideDeviceNameResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_HIDE_DEVICE_NAME", "string", this.cordova.getActivity().getPackageName());
+			String hideDeviceName = this.cordova.getActivity().getString(hideDeviceNameResId);
+		    if (!"unset".equals(hideDeviceName)) {
+				Bugfender.overrideDeviceName("Unknown");
+			}
+
 			int baseURLResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_BASE_URL", "string", this.cordova.getActivity().getPackageName());
 			String baseURL = this.cordova.getActivity().getString(baseURLResId);
 		    if (!"unset".equals(baseURL)) {
@@ -98,10 +104,6 @@ public class BugfenderPlugin extends CordovaPlugin {
 				Bugfender.forceSendOnce();
 				callbackContext.success();
 				return true;
-			} else if (action.equals("getDeviceIdentifier")) {
-				String deviceId = Bugfender.getDeviceIdentifier();
-				callbackContext.success(deviceId);
-				return true;
 			} else if (action.equals("getDeviceUrl")) {
 				URL deviceURL = Bugfender.getDeviceUrl();
 				callbackContext.success(deviceURL.toString());
@@ -118,7 +120,7 @@ public class BugfenderPlugin extends CordovaPlugin {
 			} else if (action.equals("sendIssue")) {
 				String title = args.getString(0);
 				String text = args.getString(1);
-				URL issueURL = Bugfender.sendIssueReturningUrl(title, text);
+				URL issueURL = Bugfender.sendIssue(title, text);
 				callbackContext.success(issueURL.toString());
 				return true;
 			} else if (action.equals("sendCrash")) {
@@ -130,7 +132,7 @@ public class BugfenderPlugin extends CordovaPlugin {
 			} else if (action.equals("sendUserFeedback")) {
 				String title = args.getString(0);
 				String text = args.getString(1);
-				URL ufURL = Bugfender.sendUserFeedbackReturningUrl(title, text);
+				URL ufURL = Bugfender.sendUserFeedback(title, text);
 				callbackContext.success(ufURL.toString());
 				return true;
 			} else if (action.equals("setDeviceKey")) {

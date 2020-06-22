@@ -8,12 +8,6 @@ forceSendOnce: function () {
 		window["cordova"].exec(null, null, "Bugfender", "forceSendOnce", []);
 },
 
-getDeviceIdentifier: function (s) {
-	checkLoaded();
-	if(window["device"] && window["device"].platform != "browser")
-		window["cordova"].exec(s, null, "Bugfender", "getDeviceIdentifier", []);
-},
-
 removeDeviceKey: function (key) {
 	checkLoaded();
 	if(window["device"] && window["device"].platform != "browser")
