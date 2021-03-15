@@ -2,15 +2,15 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-plugin-bugfender"
-    version="1.2.1">
+    id="@spoonconsulting/cordova-plugin-bugfender"
+    version="1.2.2">
     <name>Bugfender</name>
     <description>Bugfender integration for Cordova apps</description>
     <license>See https://bugfender.com</license>
     <keywords>bugfender,cordova</keywords>
 
     <engines>
-            <engine name="cordova" version=">=5.0.0" />
+        <engine name="cordova" version=">=5.0.0" />
     </engines>
     <dependency id="cordova-plugin-device" />
 

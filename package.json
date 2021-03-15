@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-bugfender",
-  "version": "1.2.1",
+  "name": "@spoonconsulting/cordova-plugin-bugfender",
+  "version": "1.2.2",
   "description": "Cordova Bugfender Plugin",
   "cordova": {
-    "id": "cordova-plugin-bugfender",
+    "id": "@spoonconsulting/cordova-plugin-bugfender",
     "platforms": [
       "android",
       "ios"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bugfender/cordova-plugin-bugfender"
+    "url": "https://github.com/spoonconsulting/cordova-plugin-bugfender"
   },
   "keywords": [
     "cordova",
@@ -21,7 +21,7 @@
     "cordova-android",
     "cordova-ios"
   ],
-  "author": "Bugfender Team",
+  "author": "Bugfender Team & Spoon Consulting Ltd",
   "license": "See https://bugfender.com/terms",
   "dependencies": {
     "semver": "^6.3.0"
