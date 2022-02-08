@@ -2,12 +2,14 @@
 This plugin adds Bugfender support for Cordova applications under iOS and Android. Also works on Cordova-based projects such as Phonegap and Ionic.
 
 ## Requirements
-For iOS, you will need macOS and [CocoaPods](http://cocoapods.org/) installed on your system. iOS deployment target version is required to be 8.0 at least.
+You will need Cordova 9, Ionic 4 or a newer.
+
+For iOS, you will need macOS and [CocoaPods](http://cocoapods.org/) installed on your system. iOS deployment target version is required to be 10.0 at least.
 
 You can set the minimum version by adding this preference to the `<platform name="ios">` tag in your `config.xml`:
 
 ```
- <preference name="deployment-target" value="8.0" />
+ <preference name="deployment-target" value="10.0" />
 ```
 
 You will also need to update your Cocoapods specs, otherwise the installation might fail:
@@ -20,7 +22,7 @@ pod repo update
 In the command line, run (replace `XXX` with your app key):
 
 ```
-cordova plugin add cordova-plugin-bugfender --variable BUGFENDER_APP_KEY=XXX --save
+cordova plugin add cordova-plugin-bugfender --variable BUGFENDER_APP_KEY=XXX --variable BUGFENDER_AUTOMATIC=UI,CRASH --save
 ```
 
 **If using TypeScript:** you also need to declare the Bugfender global variable in the files where you need it:
@@ -65,6 +67,12 @@ The `BUGFENDER_AUTOMATIC` variable is a comma separated set of the following val
 * `ALL`: all automated loggers are enabled. As of today, this is equivalent to `UI,LOG,CRASH`, but more loggers could be included in the future. This enables all of them.
 
 You can specify this variable when installing the plugin as a `--variable`, for example `cordova plugin add cordova-plugin-bugfender --variable BUGFENDER_APP_KEY=XXX --variable BUGFENDER_AUTOMATIC=NONE --save`.
+
+### Base URLs (optional)
+If you have your own Bugfender instance, you will need to set `BUGFENDER_API_URL` and `BUGFENDER_BASE_URL` according to the provided instructions.
+
+### Hide device name
+The `BUGFENDER_HIDE_DEVICE_NAME` enables hiding the device name if you do not want to collect it automatically. Set it to any value, for example `--variable BUGFENDER_HIDE_DEVICE_NAME=YES`.
 
 ## Reference
 

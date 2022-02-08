@@ -10,10 +10,10 @@ module.exports = function (context) {
         configParser.getPreference('deployment-target') ||
         '7.0';
 
-    if (iosMinVersion.substring(0,iosMinVersion.indexOf('.')) < 8) {
-        throw 'Deployment target version is required to be 8.0 at least. Detected version '+iosMinVersion+' instead.\n'+
+    if (iosMinVersion.substring(0,iosMinVersion.indexOf('.')) < 10) {
+        throw 'Deployment target version is required to be 10.0 at least. Detected version '+iosMinVersion+' instead.\n'+
               'Add something like this to your iOS target:\n'+
-              '<preference name="deployment-target" value="8.0" />';
+              '<preference name="deployment-target" value="10.0" />';
     }
 }
 

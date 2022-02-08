@@ -11,16 +11,41 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.List;
 
+import java.net.URL;
+
 import android.app.Application;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import com.bugfender.sdk.Bugfender;
 import com.bugfender.sdk.LogLevel;
 
 public class BugfenderPlugin extends CordovaPlugin {
 
+		private CallbackContext callback = null;
+		public static final int FEEDBACK_REQUEST_CODE = 2222;
+
 		@Override
 		protected void pluginInitialize() {
+			int hideDeviceNameResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_HIDE_DEVICE_NAME", "string", this.cordova.getActivity().getPackageName());
+			String hideDeviceName = this.cordova.getActivity().getString(hideDeviceNameResId);
+		    if (!"unset".equals(hideDeviceName)) {
+				Bugfender.overrideDeviceName("Unknown");
+			}
+
+			int baseURLResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_BASE_URL", "string", this.cordova.getActivity().getPackageName());
+			String baseURL = this.cordova.getActivity().getString(baseURLResId);
+		    if (!"unset".equals(baseURL)) {
+				Bugfender.setBaseUrl(baseURL);
+			}
+
+			int apiURLResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_API_URL", "string", this.cordova.getActivity().getPackageName());
+			String apiURL = this.cordova.getActivity().getString(apiURLResId);
+		    if (!"unset".equals(apiURL)) {
+				Bugfender.setApiUrl(apiURL);
+			}
+
 			int appResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_APP_KEY", "string", this.cordova.getActivity().getPackageName());
 			String key = this.cordova.getActivity().getString(appResId);
 		    if (key.length() == 0) {
@@ -79,9 +104,13 @@ public class BugfenderPlugin extends CordovaPlugin {
 				Bugfender.forceSendOnce();
 				callbackContext.success();
 				return true;
-			} else if (action.equals("getDeviceIdentifier")) {
-				String deviceId = Bugfender.getDeviceIdentifier();
-				callbackContext.success(deviceId);
+			} else if (action.equals("getDeviceUrl")) {
+				URL deviceURL = Bugfender.getDeviceUrl();
+				callbackContext.success(deviceURL.toString());
+				return true;
+			} else if (action.equals("getSessionUrl")) {
+				URL sessionURL = Bugfender.getSessionUrl();
+				callbackContext.success(sessionURL.toString());
 				return true;
 			} else if (action.equals("removeDeviceKey")) {
 				String key = args.getString(0);
@@ -91,8 +120,20 @@ public class BugfenderPlugin extends CordovaPlugin {
 			} else if (action.equals("sendIssue")) {
 				String title = args.getString(0);
 				String text = args.getString(1);
-				Bugfender.sendIssue(title, text);
-				callbackContext.success();
+				URL issueURL = Bugfender.sendIssue(title, text);
+				callbackContext.success(issueURL.toString());
+				return true;
+			} else if (action.equals("sendCrash")) {
+				String title = args.getString(0);
+				String text = args.getString(1);
+				URL crashURL = Bugfender.sendCrash(title, text);
+				callbackContext.success(crashURL.toString());
+				return true;
+			} else if (action.equals("sendUserFeedback")) {
+				String title = args.getString(0);
+				String text = args.getString(1);
+				URL ufURL = Bugfender.sendUserFeedback(title, text);
+				callbackContext.success(ufURL.toString());
 				return true;
 			} else if (action.equals("setDeviceKey")) {
 				String key = args.getString(0);
@@ -125,7 +166,33 @@ public class BugfenderPlugin extends CordovaPlugin {
 				Bugfender.setMaximumLocalStorageSize(size);
 				callbackContext.success();
 				return true;
+			} else if (action.equals("showUserFeedbackUI")) {
+				String title = args.getString(0);
+				String hint = args.getString(1);
+				String subjectHint = args.getString(2);
+				String messageHint = args.getString(3);
+				String sendButtonText = args.getString(4);;
+				this.callback = callbackContext;
+				cordova.setActivityResultCallback (this);
+
+				Intent userFeedbackIntent = Bugfender.getUserFeedbackActivityIntent (this.cordova.getActivity(), title, hint, subjectHint, messageHint, sendButtonText);
+				cordova.startActivityForResult (this, userFeedbackIntent, FEEDBACK_REQUEST_CODE);
+				return true;
 			}
 			return false;
+		}
+
+		@Override
+		public void onActivityResult(int requestCode, int resultCode, Intent data) 
+		{
+			if (requestCode == FEEDBACK_REQUEST_CODE) {
+				if (resultCode == Activity.RESULT_OK) {
+					this.callback.success(data.getStringExtra ("result.feedback.url"));
+				} else {
+					this.callback.error("User cancelled");
+				}
+			} else {
+				super.onActivityResult (requestCode, resultCode, data);
+			}
 		}
 }

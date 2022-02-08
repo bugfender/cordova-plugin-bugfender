@@ -1,7 +1,7 @@
 /**
  * @name Bugfender
  * @description
- * A Cordova plugin to send logs to the Bugfender service.
+ * A Cordova/Ionic plugin to send logs to the Bugfender service.
  *
  * @usage
  * ```typescript
@@ -11,9 +11,8 @@
  */
 export declare class Bugfender {
     static forceSendOnce(): void;
-    static getDeviceIdentifier(callback: (id: string) => void): void;
     static removeDeviceKey(key: string): void;
-    static sendIssue(title: string, markdown: string): void;
+    static sendIssue(title: string, markdown: string, callback?: (url: string) => void): void;
     static setDeviceKey(key: string, value: string): void;
     static setForceEnabled(enabled: boolean): void;
     static setMaximumLocalStorageSize(bytes: number): void;
@@ -30,4 +29,9 @@ export declare class Bugfender {
     private static logWithLevel;
     private static notLoadedWarningShown;
     private static checkLoaded;
+    static getDeviceUrl(callback: (url: string) => void): void;
+    static getSessionUrl(callback: (url: string) => void): void;
+    static showUserFeedbackUI(title: string, hint: string, subjectHint: string, messageHint: string, sendButtonText: string, cancelButtonText: string, callback?: (sent: boolean) => void): void;
+    static sendCrash(title: string, markdown: string, callback?: (url: string) => void): void;
+    static sendUserFeedback(title: string, markdown: string, callback?: (url: string) => void): void;
 }
