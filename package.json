@@ -2,17 +2,8 @@
   "name": "cordova-plugin-bugfender",
   "version": "2.0.1",
   "description": "Cordova Bugfender Plugin",
-  "cordova": {
-    "id": "cordova-plugin-bugfender",
-    "platforms": [
-      "android",
-      "ios"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bugfender/cordova-plugin-bugfender"
-  },
+  "author": "Bugfender Team",
+  "license": "See https://bugfender.com/terms",
   "keywords": [
     "cordova",
     "bugfender",
@@ -21,9 +12,54 @@
     "cordova-android",
     "cordova-ios"
   ],
-  "author": "Bugfender Team",
-  "license": "See https://bugfender.com/terms",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugfender/cordova-plugin-bugfender"
+  },
+  "cordova": {
+    "id": "cordova-plugin-bugfender",
+    "platforms": [
+      "browser",
+      "android",
+      "ios"
+    ]
+  },
+  "main": "dist/main.js",
+  "types": "dist/types.d.ts",
+  "files": [
+    "plugin.xml",
+    "dist",
+    "platforms",
+    "scripts"
+  ],
+  "alias": {
+    "buffer": "buffer",
+    "util": "util"
+  },
+  "targets": {
+    "default": {
+      "source": [
+        "src/main.ts",
+        "src/www/bugfender.ts"
+      ],
+      "context": "browser",
+      "outputFormat": "commonjs",
+      "isLibrary": true,
+      "distDir": "dist"
+    }
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "watch": "parcel watch",
+    "build": "parcel build"
+  },
   "dependencies": {
+    "@bugfender/sdk": "^2.0.0",
     "semver": "^6.3.0"
+  },
+  "devDependencies": {
+    "buffer": "^6.0.3",
+    "parcel": "^2.5.0",
+    "process": "^0.11.10"
   }
 }

@@ -16,10 +16,8 @@
     </engines>
     <dependency id="cordova-plugin-device" />
 
-    <js-module src="www/bugfender.js" name="bugfender">
+    <js-module src="dist/main.js" name="bugfender">
         <clobbers target="window.Bugfender" />
-    </js-module>
-    <js-module src="www/bf-util.js" name="bf-util">
     </js-module>
 
     <preference name="BUGFENDER_APP_KEY"/>
@@ -80,6 +78,7 @@
         </config-file>
 
         <config-file target="config.xml" parent="/*">
+            <preference name="deployment-target" value="10.0" />
             <feature name="Bugfender">
                 <param name="ios-package" value="BFCDVSDKBugfender" />
                 <param name="onload" value="true" />

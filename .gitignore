@@ -11,5 +11,7 @@ Thumbs.db
 *.user
 
 node_modules
-
-
+.parcel-cache
+dist
+package
+legacy
