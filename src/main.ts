@@ -1,7 +1,6 @@
 import { format } from 'util';
 import { Bugfender as BugfenderWeb } from '@bugfender/sdk';
 
-console.log(BugfenderWeb);
 
 class BugfenderClass {
     public forceSendOnce() {
