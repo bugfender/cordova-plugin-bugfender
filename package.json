@@ -43,8 +43,7 @@
         "src/www/bugfender.ts"
       ],
       "context": "browser",
-      "outputFormat": "commonjs",
-      "isLibrary": true,
+      "outputFormat": "global",
       "distDir": "dist"
     }
   },

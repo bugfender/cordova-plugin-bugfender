@@ -109,7 +109,7 @@ class BugfenderClass {
     }
 }
 
-export const Bugfender = new BugfenderClass();
+module.exports.Bugfender = new BugfenderClass();
 
 
 /* example on iOS:
