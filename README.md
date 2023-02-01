@@ -52,6 +52,22 @@ Then use `Bugfender.log()` to log anything you want. Syntax is the same as `cons
 
 For a basic use of Bugfender, that's all you need to do. Read on to learn more advanced options.
 
+## Installing in Ionic with Capacitor
+Install the dependency
+```shell
+npm install --save cordova-plugin-bugfender
+```
+
+In your capacitor.config.ts you can add your app key and configuration:
+
+```typescript
+ cordova: {
+    preferences: {
+      BUGFENDER_APP_KEY: 'xxx',
+    },
+  },
+```
+
 ## Configuration variables
 
 ### Application key

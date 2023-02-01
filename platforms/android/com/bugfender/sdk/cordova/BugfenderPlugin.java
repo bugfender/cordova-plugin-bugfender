@@ -26,35 +26,39 @@ public class BugfenderPlugin extends CordovaPlugin {
 		private CallbackContext callback = null;
 		public static final int FEEDBACK_REQUEST_CODE = 2222;
 
+		private String getConfigValue(String name, String defaultValue) {
+			int id = this.cordova.getActivity().getResources().getIdentifier(name, "string", this.cordova.getActivity().getPackageName());
+			if (id != 0) {
+				return this.cordova.getActivity().getString(id);
+			} else {
+				return this.preferences.getString(name, defaultValue);
+			}
+		}
+
 		@Override
 		protected void pluginInitialize() {
-			int hideDeviceNameResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_HIDE_DEVICE_NAME", "string", this.cordova.getActivity().getPackageName());
-			String hideDeviceName = this.cordova.getActivity().getString(hideDeviceNameResId);
+			String hideDeviceName = getConfigValue("BUGFENDER_HIDE_DEVICE_NAME", "unset");
 		    if (!"unset".equals(hideDeviceName)) {
 				Bugfender.overrideDeviceName("Unknown");
 			}
 
-			int baseURLResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_BASE_URL", "string", this.cordova.getActivity().getPackageName());
-			String baseURL = this.cordova.getActivity().getString(baseURLResId);
+			String baseURL = getConfigValue("BUGFENDER_BASE_URL", "unset");
 		    if (!"unset".equals(baseURL)) {
 				Bugfender.setBaseUrl(baseURL);
 			}
 
-			int apiURLResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_API_URL", "string", this.cordova.getActivity().getPackageName());
-			String apiURL = this.cordova.getActivity().getString(apiURLResId);
+			String apiURL = getConfigValue("BUGFENDER_API_URL", "unset");
 		    if (!"unset".equals(apiURL)) {
 				Bugfender.setApiUrl(apiURL);
 			}
 
-			int appResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_APP_KEY", "string", this.cordova.getActivity().getPackageName());
-			String key = this.cordova.getActivity().getString(appResId);
+			String key = getConfigValue("BUGFENDER_APP_KEY", "");
 		    if (key.length() == 0) {
 				System.out.println("Please set BUGFENDER_APP_KEY in config.xml");
 				return;
 			}
 
-			int enablesResId = this.cordova.getActivity().getResources().getIdentifier("BUGFENDER_AUTOMATIC", "string", this.cordova.getActivity().getPackageName());
-			String enabled = this.cordova.getActivity().getString(enablesResId);
+			String enabled = getConfigValue("BUGFENDER_AUTOMATIC", "ALL");
 		    if (enabled.length() == 0 || "ALL".equals(enabled))
 				enabled = "UI,LOG,CRASH";
 			List<String> enables = Arrays.asList(enabled.split(","));
