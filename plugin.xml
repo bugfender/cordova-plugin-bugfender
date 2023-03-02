@@ -94,7 +94,7 @@
             <source url="https://cdn.cocoapods.org/"/>
           </config>
           <pods use-frameworks="true">
-                <pod name="BugfenderSDK" spec="~> 1.9.2" />
+                <pod name="BugfenderSDK" spec="~> 1.10" />
             </pods>
         </podspec>
         <hook type="before_plugin_install" src="scripts/check_ios_target.js"/>
