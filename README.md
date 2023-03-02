@@ -1,4 +1,7 @@
 # cordova-plugin-bugfender
+
+> ⚠️ **NOTE:** If you're starting a new project we recomend you to use [Capacitor](https://capacitorjs.com/) with it's corresponding [Bugfender SDK](https://github.com/bugfender/bugfender-web-capacitor).
+
 This plugin adds Bugfender support for Cordova applications under iOS and Android. Also works on Cordova-based projects such as Phonegap and Ionic.
 
 ## Requirements
