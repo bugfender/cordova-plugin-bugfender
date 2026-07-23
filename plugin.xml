@@ -3,7 +3,7 @@
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-plugin-bugfender"
-    version="2.1.0">
+    version="3.0.0">
     <name>Bugfender</name>
     <description>Bugfender integration for Cordova apps</description>
     <license>See https://bugfender.com</license>
@@ -27,18 +27,47 @@
     <preference name="BUGFENDER_BASE_URL" default="unset"/>
     <preference name="BUGFENDER_API_URL" default="unset"/>
     <preference name="BUGFENDER_HIDE_DEVICE_NAME" default="unset"/>
+    <preference name="BUGFENDER_NETWORK_LOGGING" default="false"/>
+    <preference name="BUGFENDER_NETWORK_CAPTURE_BODIES" default="false"/>
+    <preference name="BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES" default="false"/>
 
     <platform name="browser">
         <info>cordova-plugin-bugfender ignores all method calls when being used in a browser</info>
     </platform>
 
     <platform name="android">
+        <!-- Preferences are readable via CordovaPreferences (works on cordova-android 15+) -->
+        <config-file target="config.xml" parent="/*">
+            <preference name="BUGFENDER_APP_KEY" value="$BUGFENDER_APP_KEY" />
+            <preference name="BUGFENDER_AUTOMATIC" value="$BUGFENDER_AUTOMATIC" />
+            <preference name="BUGFENDER_BASE_URL" value="$BUGFENDER_BASE_URL" />
+            <preference name="BUGFENDER_API_URL" value="$BUGFENDER_API_URL" />
+            <preference name="BUGFENDER_HIDE_DEVICE_NAME" value="$BUGFENDER_HIDE_DEVICE_NAME" />
+            <preference name="BUGFENDER_NETWORK_LOGGING" value="$BUGFENDER_NETWORK_LOGGING" />
+            <preference name="BUGFENDER_NETWORK_CAPTURE_BODIES" value="$BUGFENDER_NETWORK_CAPTURE_BODIES" />
+            <preference name="BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES" value="$BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES" />
+        </config-file>
+
+        <!-- Legacy cordova-android (<15) used strings.xml; 15+ uses cdv_strings.xml -->
         <config-file target="res/values/strings.xml" parent="/*">
             <string name="BUGFENDER_APP_KEY">$BUGFENDER_APP_KEY</string>
             <string name="BUGFENDER_AUTOMATIC">$BUGFENDER_AUTOMATIC</string>
             <string name="BUGFENDER_BASE_URL">$BUGFENDER_BASE_URL</string>
             <string name="BUGFENDER_API_URL">$BUGFENDER_API_URL</string>
             <string name="BUGFENDER_HIDE_DEVICE_NAME">$BUGFENDER_HIDE_DEVICE_NAME</string>
+            <string name="BUGFENDER_NETWORK_LOGGING">$BUGFENDER_NETWORK_LOGGING</string>
+            <string name="BUGFENDER_NETWORK_CAPTURE_BODIES">$BUGFENDER_NETWORK_CAPTURE_BODIES</string>
+            <string name="BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES">$BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES</string>
+        </config-file>
+        <config-file target="res/values/cdv_strings.xml" parent="/*">
+            <string name="BUGFENDER_APP_KEY">$BUGFENDER_APP_KEY</string>
+            <string name="BUGFENDER_AUTOMATIC">$BUGFENDER_AUTOMATIC</string>
+            <string name="BUGFENDER_BASE_URL">$BUGFENDER_BASE_URL</string>
+            <string name="BUGFENDER_API_URL">$BUGFENDER_API_URL</string>
+            <string name="BUGFENDER_HIDE_DEVICE_NAME">$BUGFENDER_HIDE_DEVICE_NAME</string>
+            <string name="BUGFENDER_NETWORK_LOGGING">$BUGFENDER_NETWORK_LOGGING</string>
+            <string name="BUGFENDER_NETWORK_CAPTURE_BODIES">$BUGFENDER_NETWORK_CAPTURE_BODIES</string>
+            <string name="BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES">$BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES</string>
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/*">
@@ -79,6 +108,18 @@
             <string>$BUGFENDER_HIDE_DEVICE_NAME</string>
         </config-file>
 
+        <config-file target="*-Info.plist" parent="BUGFENDER_NETWORK_LOGGING">
+            <string>$BUGFENDER_NETWORK_LOGGING</string>
+        </config-file>
+
+        <config-file target="*-Info.plist" parent="BUGFENDER_NETWORK_CAPTURE_BODIES">
+            <string>$BUGFENDER_NETWORK_CAPTURE_BODIES</string>
+        </config-file>
+
+        <config-file target="*-Info.plist" parent="BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES">
+            <string>$BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES</string>
+        </config-file>
+
         <config-file target="config.xml" parent="/*">
             <feature name="Bugfender">
                 <param name="ios-package" value="BFCDVSDKBugfender" />
@@ -94,7 +135,7 @@
             <source url="https://cdn.cocoapods.org/"/>
           </config>
           <pods use-frameworks="true">
-                <pod name="BugfenderSDK" spec="~> 2.0" />
+                <pod name="BugfenderSDK" spec="~> 3.0.1" />
             </pods>
         </podspec>
         <hook type="before_plugin_install" src="scripts/check_ios_target.js"/>

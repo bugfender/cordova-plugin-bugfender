@@ -7,12 +7,12 @@ This plugin adds Bugfender support for Cordova applications under iOS and Androi
 ## Requirements
 You will need Cordova 9, Ionic 4 or a newer.
 
-For iOS, you will need macOS and [CocoaPods](http://cocoapods.org/) installed on your system. iOS deployment target version is required to be 10.0 at least.
+For iOS, you will need macOS and [CocoaPods](http://cocoapods.org/) installed on your system. iOS deployment target version is required to be 13.0 at least.
 
 You can set the minimum version by adding this preference to the `<platform name="ios">` tag in your `config.xml`:
 
 ```
- <preference name="deployment-target" value="10.0" />
+ <preference name="deployment-target" value="13.0" />
 ```
 
 You will also need to update your Cocoapods specs, otherwise the installation might fail:
@@ -76,6 +76,21 @@ If you have your own Bugfender instance, you will need to set `BUGFENDER_API_URL
 
 ### Hide device name
 The `BUGFENDER_HIDE_DEVICE_NAME` enables hiding the device name if you do not want to collect it automatically. Set it to any value, for example `--variable BUGFENDER_HIDE_DEVICE_NAME=YES`.
+
+### Network logging (optional)
+Network request capture is **opt-in** and off by default. You can enable it at install time:
+
+* `BUGFENDER_NETWORK_LOGGING` — set to `true` to enable network logging
+* `BUGFENDER_NETWORK_CAPTURE_BODIES` — set to `true` to capture request/response bodies
+* `BUGFENDER_NETWORK_CAPTURE_ERROR_BODIES` — set to `true` to capture response bodies only for HTTP status ≥ 400 when full body capture is off
+
+Example:
+
+```
+cordova plugin add cordova-plugin-bugfender --variable BUGFENDER_APP_KEY=XXX --variable BUGFENDER_NETWORK_LOGGING=true --save
+```
+
+You can also configure network logging at runtime (see Reference below). Correlation headers (`X-Bugfender-Session-ID` and `X-Bugfender-Request-ID`) are added by the native SDK independently of capture.
 
 ## Reference
 
@@ -166,3 +181,39 @@ For example:
 // set cache size limit to 10 MB
 Bugfender.setMaximumLocalStorageSize(10*1024*1024);
 ```
+
+### Network logging
+Network logging is **opt-in** and disabled by default. When enabled, HTTP requests appear in Bugfender as logs tagged `bf_network`.
+
+```
+Bugfender.setNetworkLoggingEnabled(true);
+// Optional:
+Bugfender.setNetworkLoggingCaptureBodies(false);
+Bugfender.setNetworkLoggingCaptureErrorResponseBodies(true);
+Bugfender.setNetworkLoggingURLFilter(
+  ['https://api.example.com/*'],
+  ['*/secrets/*']
+);
+Bugfender.setNetworkLoggingMaxRequestsPerMinute(60);
+
+// Optional: redact sensitive headers/bodies before they are logged
+Bugfender.setNetworkLoggingRequestObfuscationHandler(function (url, headers, body) {
+  headers = Object.assign({}, headers);
+  headers.authorization = '[REDACTED]';
+  return { url: url, headers: headers, body: body };
+});
+Bugfender.setNetworkLoggingResponseObfuscationHandler(function (headers, body) {
+  return {
+    headers: headers,
+    body: body ? body.replace(/"token":"[^"]*"/g, '"token":"[REDACTED]"') : null
+  };
+});
+```
+
+* `setNetworkLoggingEnabled(enabled)` — enable or disable network logging (default: `false`)
+* `setNetworkLoggingCaptureBodies(capture)` — capture request/response bodies (default: `false`)
+* `setNetworkLoggingCaptureErrorResponseBodies(capture)` — capture response body only for HTTP status ≥ 400 when full body capture is off (default: `false`)
+* `setNetworkLoggingURLFilter(allowlist, denylist)` — include only URLs matching allowlist; exclude denylist. Pass `null` for either to disable that filter
+* `setNetworkLoggingMaxRequestsPerMinute(count)` — rate limit; pass `null` for no limit
+* `setNetworkLoggingRequestObfuscationHandler(handler)` — request obfuscation `(url, headers, body) => { url, headers, body }`; pass `null` to clear
+* `setNetworkLoggingResponseObfuscationHandler(handler)` — response obfuscation `(headers, body) => { headers, body }`; pass `null` to clear
