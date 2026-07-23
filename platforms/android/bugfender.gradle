@@ -1,3 +1,4 @@
 dependencies {
-	implementation 'com.bugfender.sdk:android:3.+'
+	implementation 'com.bugfender.sdk:android:4.+'
+	implementation 'com.bugfender.sdk:android-okhttp:4.+'
 }

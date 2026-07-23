@@ -9,6 +9,30 @@
  *
  * Bugfender.log('hello world!')
  */
+export declare type NetworkHeaders = Record<string, string>;
+
+export declare interface NetworkRequestData {
+    url: string;
+    headers: NetworkHeaders;
+    body: string | null;
+}
+
+export declare interface NetworkResponseData {
+    headers: NetworkHeaders;
+    body: string | null;
+}
+
+export declare type NetworkLoggingRequestObfuscationHandler = (
+    url: string,
+    headers: NetworkHeaders,
+    body: string | null,
+) => NetworkRequestData;
+
+export declare type NetworkLoggingResponseObfuscationHandler = (
+    headers: NetworkHeaders,
+    body: string | null,
+) => NetworkResponseData;
+
 export declare class Bugfender {
     static forceSendOnce(): void;
     static removeDeviceKey(key: string): void;
@@ -34,4 +58,15 @@ export declare class Bugfender {
     static showUserFeedbackUI(title: string, hint: string, subjectHint: string, messageHint: string, sendButtonText: string, cancelButtonText: string, callback?: (sent: boolean) => void): void;
     static sendCrash(title: string, markdown: string, callback?: (url: string) => void): void;
     static sendUserFeedback(title: string, markdown: string, callback?: (url: string) => void): void;
+    static setNetworkLoggingEnabled(enabled: boolean): void;
+    static setNetworkLoggingCaptureBodies(capture: boolean): void;
+    static setNetworkLoggingCaptureErrorResponseBodies(capture: boolean): void;
+    static setNetworkLoggingURLFilter(allowlist: string[] | null, denylist: string[] | null): void;
+    static setNetworkLoggingMaxRequestsPerMinute(count: number | null): void;
+    static setNetworkLoggingRequestObfuscationHandler(
+        handler: NetworkLoggingRequestObfuscationHandler | null,
+    ): void;
+    static setNetworkLoggingResponseObfuscationHandler(
+        handler: NetworkLoggingResponseObfuscationHandler | null,
+    ): void;
 }
